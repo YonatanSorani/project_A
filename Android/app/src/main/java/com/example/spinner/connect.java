@@ -3,16 +3,11 @@ package com.example.spinner;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.*;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 public class connect extends AppCompatActivity  implements WebSocketMessageListener{
     private Button connect_b;

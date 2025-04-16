@@ -5,9 +5,7 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+
 
 import android.view.View;
 import android.widget.ImageButton;
@@ -15,10 +13,6 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
-
-import okhttp3.*;
 import org.json.JSONObject;
 
 
@@ -142,32 +136,7 @@ public class operate extends AppCompatActivity implements WebSocketMessageListen
         on = false;
     }
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item){
-        int id = item.getItemId();
-        if(id == R.id.back){
-            Intent connect_act=new Intent(operate.this,connect.class);
-            startActivity(connect_act);
-            return true;
-        }
-        else if(id == R.id.operate) {
-            Intent operate_act=new Intent(operate.this,operate.class);
-            startActivity(operate_act);
-            return true;
-        }
-        else if(id == R.id.report){
-            Intent report_act=new Intent(operate.this,GraphsActivity.class);
-            startActivity(report_act);
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu,menu);
-        return true;
-    }
+
     public void onMessageReceived(String message) {
         try {
             // Parse the received message as JSON

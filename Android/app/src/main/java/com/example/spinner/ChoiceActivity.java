@@ -11,9 +11,6 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import org.json.JSONObject;
 
@@ -100,6 +97,7 @@ public class ChoiceActivity extends AppCompatActivity implements  WebSocketMessa
             }
         });
     }
+    @Override
     protected void onStart() {
         super.onStart();
         if (!WebSocketManager.getInstance().isConnected()) {

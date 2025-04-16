@@ -3,20 +3,15 @@ package com.example.spinner;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -62,6 +57,10 @@ public class LunaActivity extends AppCompatActivity implements WebSocketMessageL
         mcharts[0] = (LineChart) findViewById(R.id.luna_chart1);
         mcharts[1] = (LineChart) findViewById(R.id.luna_chart2);
         mcharts[2] = (LineChart) findViewById(R.id.luna_chart3);
+
+        for (int i = 0; i < 3; i++) {
+            updateGraph(0, 0, i);
+        }
         returnToChoice = findViewById(R.id.return_choice);
         isTopSpinning = findViewById(R.id.is_top_spinning);
 
@@ -156,10 +155,7 @@ public class LunaActivity extends AppCompatActivity implements WebSocketMessageL
         chart.notifyDataSetChanged();
         chart.invalidate(); // Redraw the chart
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -171,13 +167,6 @@ public class LunaActivity extends AppCompatActivity implements WebSocketMessageL
         Toast.makeText(getBaseContext(), "luna listener", Toast.LENGTH_LONG).show();
 
         WebSocketManager.sendMessage(4, "luna"); //send message that the activity has switched
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        // Optional: Set the listener to null when the activity is paused
-        Toast.makeText(getBaseContext(), "listener is null", Toast.LENGTH_LONG).show();
     }
 
     @Override
