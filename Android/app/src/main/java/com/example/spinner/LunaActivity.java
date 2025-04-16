@@ -164,7 +164,6 @@ public class LunaActivity extends AppCompatActivity implements WebSocketMessageL
         }
         // Set this activity as the listener to handle WebSocket messages
         WebSocketManager.getInstance().setMessageListener(this);
-        Toast.makeText(getBaseContext(), "luna listener", Toast.LENGTH_LONG).show();
 
         WebSocketManager.sendMessage(4, "luna"); //send message that the activity has switched
     }

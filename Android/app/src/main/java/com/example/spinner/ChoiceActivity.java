@@ -105,8 +105,6 @@ public class ChoiceActivity extends AppCompatActivity implements  WebSocketMessa
         }
         // Set this activity as the listener to handle WebSocket messages
         WebSocketManager.getInstance().setMessageListener(this);
-        Toast.makeText(getBaseContext(), "choice listener", Toast.LENGTH_LONG).show();
-
         WebSocketManager.sendMessage(4, "choice"); //send message that the activity has switched
     }
     @Override

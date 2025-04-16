@@ -68,7 +68,7 @@ public class operate extends AppCompatActivity implements WebSocketMessageListen
         ip = MainClass.ip;
         // Connect to WebSocket
         WebSocketManager.getInstance().setMessageListener(this);
-        Toast.makeText(getBaseContext(), "initializing listener", Toast.LENGTH_LONG).show();
+
         // Handle On/Off switch
         OnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
             on = isChecked;  // Update the global 'on' boolean based on Switch state
@@ -125,8 +125,6 @@ public class operate extends AppCompatActivity implements WebSocketMessageListen
         }
         // Set this activity as the listener to handle WebSocket messages
         WebSocketManager.getInstance().setMessageListener(this);
-        Toast.makeText(getBaseContext(), "operate listener", Toast.LENGTH_LONG).show();
-
         WebSocketManager.sendMessage(4, "operate"); //send message that the activity has switched
 
     }
@@ -166,14 +164,12 @@ public class operate extends AppCompatActivity implements WebSocketMessageListen
                 String direction_str = jsonResponse.getString("direction");
                 //  Update the UI based on the received mode
                 runOnUiThread(() -> {
-                    direction.setText("Choosing direction: " + direction_str);
                     if (mode.equals("On")) {
                         on = true;
-                        Toast.makeText(getBaseContext(), "Mode is On", Toast.LENGTH_LONG).show();
+                        direction.setText("Choosing direction: " + direction_str);
                     } else if (mode.equals("Off")) {
                         on = false;
-                        direction.setText(direction_str);  // Change the TextView text to "Mode is Off"
-                        Toast.makeText(getBaseContext(), "Mode is Off", Toast.LENGTH_LONG).show();
+                        direction.setText("Choosing direction: Mode is Off");
                     }
                 });
             } else if(action.equals("statusUpdate")) {

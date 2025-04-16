@@ -42,36 +42,6 @@
             android:name=".ChoiceActivity"
             android:exported="false" />
         <activity
-            android:name=".GraphsActivity"
-            android:exported="false" />
-        <!--
-  <activity
-            android:name=".out.production.spinner.com.example.spinner.graphs"
-            android:exported="false"
-            android:label="@string/title_activity_graphs"
-            android:theme="@style/Theme.Spinner" />
-        <activity
-            android:name=".report3"
-            android:exported="false" />
-        <activity
-            android:name=".report2"
-            android:exported="false" />
-
-        <!-
-<activity
-            android:name=".hammer"
-            android:exported="true" />
-        <activity
-            android:name=".menu"
-            android:exported="true" />
-        <activity
-            android:name=".angle"
-            android:exported="true" />
-        <activity
-            android:name=".velocity"
-            android:exported="true" />
-        -->
-        <activity
             android:name=".connect"
             android:exported="true"
             android:label="spinner"

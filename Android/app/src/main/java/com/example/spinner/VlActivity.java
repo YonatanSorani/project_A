@@ -164,17 +164,9 @@ public class VlActivity extends AppCompatActivity implements WebSocketMessageLis
         }
         // Set this activity as the listener to handle WebSocket messages
         WebSocketManager.getInstance().setMessageListener(this);
-        Toast.makeText(getBaseContext(), "mpu listener", Toast.LENGTH_LONG).show();
-
         WebSocketManager.sendMessage(4, "vl"); //send message that the activity has switched
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        // Optional: Set the listener to null when the activity is paused
-        Toast.makeText(getBaseContext(), "listener is null", Toast.LENGTH_LONG).show();
-    }
     @Override
     public void onMessageReceived(String message) {
         try {
