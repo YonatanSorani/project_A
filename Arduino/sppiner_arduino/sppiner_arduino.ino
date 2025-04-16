@@ -130,8 +130,7 @@ void setup() {
   initLEDs();
   initHammers();
   initData();
-  //initLuna();
-  //ticker.attach(0.1, ticker_fun);  // 5 seconds interval  
+  //initLuna(); 
   //initVl53();
 
 

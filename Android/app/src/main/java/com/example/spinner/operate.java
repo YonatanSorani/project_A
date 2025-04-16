@@ -1,5 +1,4 @@
 package com.example.spinner;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -73,13 +72,13 @@ public class operate extends AppCompatActivity implements WebSocketMessageListen
         OnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
             on = isChecked;  // Update the global 'on' boolean based on Switch state
             String mode = isChecked ? "On" : "Off";  // Set mode based on switch state
-            WebSocketManager.sendMessage(3, mode);  // Send the mode update to the server
+            WebSocketManager.sendMessage(5, mode);  // Send the mode update to the server
         });
 
         // Handle forward button click
         forward.setOnClickListener(v -> {
             if(on) {
-                WebSocketManager.sendMessage(1,"forward");
+                WebSocketManager.sendMessage(6,"forward");
             }else{
                 Toast.makeText(getBaseContext(), "Mode is off, can't move", Toast.LENGTH_LONG).show();
             }
@@ -88,7 +87,7 @@ public class operate extends AppCompatActivity implements WebSocketMessageListen
         // Handle backward button click
         backward.setOnClickListener(v -> {
             if(on) {
-                WebSocketManager.sendMessage(1,"backward");
+                WebSocketManager.sendMessage(6,"backward");
             }else{
                 Toast.makeText(getBaseContext(), "Mode is off, can't move", Toast.LENGTH_LONG).show();
             }
@@ -97,7 +96,7 @@ public class operate extends AppCompatActivity implements WebSocketMessageListen
         // Handle right button click
         right.setOnClickListener(v -> {
             if(on) {
-                WebSocketManager.sendMessage(1,"right");
+                WebSocketManager.sendMessage(6,"right");
             }else{
                 Toast.makeText(getBaseContext(), "Mode is off, can't move", Toast.LENGTH_LONG).show();
             }
@@ -106,7 +105,7 @@ public class operate extends AppCompatActivity implements WebSocketMessageListen
         // Handle left button click
         left.setOnClickListener(v -> {
             if(on) {
-                WebSocketManager.sendMessage(1,"left");
+                WebSocketManager.sendMessage(6,"left");
             }else{
                 Toast.makeText(getBaseContext(), "Mode is off, can't move", Toast.LENGTH_LONG).show();
             }
@@ -145,7 +144,7 @@ public class operate extends AppCompatActivity implements WebSocketMessageListen
                 runOnUiThread(() -> {
                     Toast.makeText(getBaseContext(), "WebSocket not connected or send failed", Toast.LENGTH_LONG).show();
                 });
-            } else if (action.equals("move")) {// Handle "move" action
+            } else if (action.equals("moveHammer")) {// Handle "move" action
                 String direction_str = jsonResponse.getString("direction");
 
                 // Update the UI with the received direction
@@ -159,7 +158,7 @@ public class operate extends AppCompatActivity implements WebSocketMessageListen
                 runOnUiThread(() -> {
                     battery.setText("Battery: " + batteryStatus + "%");
                 });
-            } else if (action.equals("mode")) {// Handle "mode" action
+            } else if (action.equals("modeHammer")) {// Handle "mode" action
                 String mode = jsonResponse.getString("mode");
                 String direction_str = jsonResponse.getString("direction");
                 //  Update the UI based on the received mode
