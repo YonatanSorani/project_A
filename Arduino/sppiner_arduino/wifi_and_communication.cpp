@@ -10,8 +10,11 @@ bool is_right = false;
 bool is_forward = false;
 bool is_backward = false; 
 
-char Mode[8] = "Off";
-char direction[32] = "direction: not picked yet";
+char ModeTop[8] = "Off";
+char directionTop[32] = "not picked yet";
+
+char ModeHammer[8] = "Off";
+char directionHammer[32] = "not picked yet";
 
 vector<AsyncWebSocketClient *> clients;
 AsyncWebServer server(80);
@@ -55,75 +58,114 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsE
       Serial.println("Action field is missing");
       responseDoc["action"] = "failToConnect";
     } else {
-      if (strcmp(action, "move") == 0) {
+      if (strcmp(action, "moveTop") == 0) {
         if (doc.containsKey("direction")) {
           // Safely copy the direction from the JSON object to the 'direction' char array
-          strncpy(direction, doc["direction"] | "not picked yet", sizeof(direction) - 1);
-          direction[sizeof(direction) - 1] = '\0';  // Ensure null-termination
+          strncpy(directionTop, doc["direction"] | "not picked yet", sizeof(directionTop) - 1);
+          directionTop[sizeof(directionTop) - 1] = '\0';  // Ensure null-termination
         }       
         Serial.print("Move direction: ");
-        Serial.println(direction);
+        Serial.println(directionTop);
 
-        responseDoc["action"] = "move";
-        responseDoc["direction"] = direction;
+        responseDoc["action"] = "moveTop";
+        responseDoc["direction"] = directionTop;
 
         // Compare direction using strcmp()
-        if (strcmp(direction, "left") == 0) {
+        if (strcmp(directionTop, "left") == 0) {
             is_left = true;
-            motor_u2_left();
         } 
-        else if (strcmp(direction, "forward") == 0) {
+        else if (strcmp(directionTop, "forward") == 0) {
             is_forward = true;
-            motor_u2_forward();
         } 
-        else if (strcmp(direction, "backward") == 0) {
+        else if (strcmp(directionTop, "backward") == 0) {
             is_backward = true;
-            motor_u2_backward();
         } 
-        else if (strcmp(direction, "right") == 0) {
+        else if (strcmp(directionTop, "right") == 0) {
             is_right = true;
-            motor_u2_right();
         }
 
-      } else if (strcmp(action, "battery") == 0) {
-        Serial.println("Battery status requested");
-        char battery_str[10];
-        battery(battery_str);
-        responseDoc["action"] = "battery";
-        responseDoc["status"] = battery_str;
+      }else if (strcmp(action, "moveHammer") == 0) {
+        if (doc.containsKey("direction")) {
+          // Safely copy the direction from the JSON object to the 'direction' char array
+          strncpy(directionHammer, doc["direction"] | "not picked yet", sizeof(directionHammer) - 1);
+          directionHammer[sizeof(directionHammer) - 1] = '\0';  // Ensure null-termination
+        }       
+        Serial.print("Move direction: ");
+        Serial.println(directionHammer);
 
-      } else if (strcmp(action, "mode") == 0) {
+        responseDoc["action"] = "moveHammer";
+        responseDoc["direction"] = directionHammer;
+
+        // Compare direction using strcmp()
+        if (strcmp(directionHammer, "left") == 0) {
+            motor_u2_left();
+        } 
+        else if (strcmp(directionHammer, "forward") == 0) {
+            motor_u2_forward();
+        } 
+        else if (strcmp(directionHammer, "backward") == 0) {
+            motor_u2_backward();
+        } 
+        else if (strcmp(directionHammer, "right") == 0) {
+            motor_u2_right();
+        }
+      } else if (strcmp(action, "modeTop") == 0) {
         const char* mode_input = doc["mode"];
         Serial.print("Mode: ");
         Serial.println(mode_input);
 
         // Default to "On" if mode_input is not provided
         if (mode_input != nullptr && strcmp(mode_input, "Off") == 0) {
-            is_left = false;
+          is_left = false;
             is_right = false;
             is_forward = false;
             is_backward = false;
 
-            // Reset the direction to "not picked yet"
-            strncpy(direction, "not picked yet", sizeof(direction) - 1);
-            direction[sizeof(direction) - 1] = '\0'; // Ensure null termination
-            motor_u2_stop();
+            strncpy(directionTop, "not picked yet", sizeof(directionTop) - 1);
+            directionTop[sizeof(directionTop) - 1] = '\0'; // Ensure null termination
 
             // Set Mode to "Off" with strncpy to avoid overflow
-            strncpy(Mode, "Off", sizeof(Mode) - 1);
-            Mode[sizeof(Mode) - 1] = '\0';  // Ensure null termination
+            strncpy(ModeTop, "Off", sizeof(ModeTop) - 1);
+            ModeTop[sizeof(ModeTop) - 1] = '\0';  // Ensure null termination
         } else {
             // Default mode is "On"
-            strncpy(Mode, "On", sizeof(Mode) - 1);
-            Mode[sizeof(Mode) - 1] = '\0';  // Ensure null termination
+            strncpy(ModeTop, "On", sizeof(ModeTop) - 1);
+            ModeTop[sizeof(ModeTop) - 1] = '\0';  // Ensure null termination
         }
 
         // Send the updated mode and direction to the client
-        responseDoc["action"] = "mode";
-        responseDoc["mode"] = Mode;  // `Mode` is now a char array
-        responseDoc["direction"] = direction;
+        responseDoc["action"] = "modeTop";
+        responseDoc["mode"] = ModeTop;  // `Mode` is now a char array
+        responseDoc["direction"] = directionTop;
 
-      } else if (strcmp(action, "changeActivity") == 0) {
+      } else if (strcmp(action, "modeHammer") == 0) {
+        const char* mode_input = doc["mode"];
+        Serial.print("Mode: ");
+        Serial.println(mode_input);
+
+        // Default to "On" if mode_input is not provided
+        if (mode_input != nullptr && strcmp(mode_input, "Off") == 0) {
+
+            // Reset the direction to "not picked yet"
+            strncpy(directionHammer, "not picked yet", sizeof(directionHammer) - 1);
+            directionHammer[sizeof(directionHammer) - 1] = '\0'; // Ensure null termination
+            motor_u2_stop();
+
+            // Set Mode to "Off" with strncpy to avoid overflow
+            strncpy(ModeHammer, "Off", sizeof(ModeHammer) - 1);
+            ModeHammer[sizeof(ModeHammer) - 1] = '\0';  // Ensure null termination
+        } else {
+            // Default mode is "On"
+            strncpy(ModeHammer, "On", sizeof(ModeHammer) - 1);
+            ModeHammer[sizeof(ModeHammer) - 1] = '\0';  // Ensure null termination
+        }
+
+        // Send the updated mode and direction to the client
+        responseDoc["action"] = "modeHammer";
+        responseDoc["mode"] = ModeHammer;  // `Mode` is now a char array
+        responseDoc["direction"] = directionHammer;
+
+      }else if (strcmp(action, "changeActivity") == 0) {
         Serial.println("changing activity");
         if (doc.containsKey("activity")) {
           // Create a char array to hold the activity value safely
@@ -149,6 +191,16 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsE
           }
         }
         responseDoc["action"] = "changeActivity"; 
+      }else if (strcmp(action, "battery") == 0) {
+        Serial.println("Battery status requested");
+        char battery_str[10];
+        battery(battery_str);
+        responseDoc["action"] = "battery";
+        responseDoc["status"] = battery_str;
+
+      }else if (strcmp(action, "ping") == 0) {
+        Serial.println("pong");
+        return ;
       }else {
         Serial.println("Unknown action");
         responseDoc["action"] = "failToConnect";
@@ -160,6 +212,8 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsE
     sendDataToClient(clients[0],response_str);
     responseDoc.clear();
     Serial.println(response_str);
+
+    //for moveTop, changing the LED acording to the state of the direction and mode
     if( is_right)
     {
       digitalWrite(gpio_led[0], LOW);
@@ -199,59 +253,48 @@ void updateGraph(Data dataAll,float mpuTemperature, float GyroZ, float currentEs
   switch ( current_activity){
     case LUNA:
       //Serial.println("luna");
-      doc["action"] = "data";
-      doc["time"] = dataAll.CurrentTime;
-      doc["distance"] = dataAll.distanceLuna;
-      doc["strength"] = dataAll.strengthLuna;
-      doc["temperature"] = dataAll.temperatureLuna;
-      serializeJson(doc, general_output);
+      responseDoc["action"] = "data";
+      responseDoc["time"] = dataAll.CurrentTime;
+      responseDoc["distance"] = dataAll.distanceLuna;
+      responseDoc["strength"] = dataAll.strengthLuna;
+      responseDoc["temperature"] = dataAll.temperatureLuna;
+      serializeJson(responseDoc, general_output);
       if (!clients.empty()) {
         //Serial.println("clients list not empty");
         //send data to the first client in the list
         sendDataToClient(clients[0], general_output);
       }
-      doc.clear();
+      responseDoc.clear();
       break;
     case MPU:
-      doc["action"] = "data";
-      doc["time"] = dataAll.CurrentTime;
-      doc["angle"] = currentEstimatedAngle;//dataAll.angle;
-      doc["gyro"] = GyroZ;
-      doc["count"] = mpuTemperature;
-      serializeJson(doc, general_output);
+      responseDoc["action"] = "data";
+      responseDoc["time"] = dataAll.CurrentTime;
+      responseDoc["angle"] = currentEstimatedAngle;//dataAll.angle;
+      responseDoc["gyro"] = GyroZ;
+      responseDoc["count"] = mpuTemperature;
+      serializeJson(responseDoc, general_output);
       if (!clients.empty()) {
         //Serial.println("clients list not empty");
         //send data to the first client in the list
         sendDataToClient(clients[0], general_output);
       }
-      doc.clear();
+      responseDoc.clear();
       break;
     case VL:
-      doc["action"] = "data";
-      doc["time"] = dataAll.CurrentTime;
-      doc["vl1"] = dataAll.vldistance[0];
-      doc["vl2"] = dataAll.vldistance[1];
-      doc["vl3"] = dataAll.vldistance[2];
-      serializeJson(doc, general_output);
+      responseDoc["action"] = "data";
+      responseDoc["time"] = dataAll.CurrentTime;
+      responseDoc["vl1"] = dataAll.vldistance[0];
+      responseDoc["vl2"] = dataAll.vldistance[1];
+      responseDoc["vl3"] = dataAll.vldistance[2];
+      serializeJson(responseDoc, general_output);
       if (!clients.empty()) {
         //Serial.println("clients list not empty");
         //send data to the first client in the list
         sendDataToClient(clients[0], general_output);
       }
-      doc.clear();
-      Serial.println("vl");
+      responseDoc.clear();
       break;
     case CHOICE:
-      doc["action"] = "statusUpdate";
-      doc["status"] = "spinCount";
-      doc["count"] = dataAll.rotationCount;
-      serializeJson(doc, general_output);
-      if (!clients.empty()) {
-        //Serial.println("clients list not empty");
-        //send data to the first client in the list
-        sendDataToClient(clients[0], general_output);
-      }
-      doc.clear();
       //Serial.println("choice");
       break;
     case CONNECT:
@@ -286,8 +329,7 @@ void initWiFi() {
     server.begin();
 }
 
-void sendStopSpinningMassege()
-{
+void sendStopSpinningMassege(){
   doc["action"] = "statusUpdate";//a random special num
   doc["status"] = "stopSpinning";
   serializeJson(doc, general_output);
@@ -299,8 +341,7 @@ void sendStopSpinningMassege()
   doc.clear();
 }
 
-void sendStartSpinningMassege()
-{
+void sendStartSpinningMassege(){
   doc["action"] = "statusUpdate";
   doc["status"] = "startSpinning";//a random special num
   serializeJson(doc, general_output);

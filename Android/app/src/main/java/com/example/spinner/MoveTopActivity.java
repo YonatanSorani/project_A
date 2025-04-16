@@ -145,7 +145,7 @@ public class MoveTopActivity extends AppCompatActivity implements WebSocketMessa
                 runOnUiThread(() -> {
                     Toast.makeText(getBaseContext(), "WebSocket not connected or send failed", Toast.LENGTH_LONG).show();
                 });
-            } else if (action.equals("move")) {// Handle "move" action
+            } else if (action.equals("moveTop")) {// Handle "move" action
                 String direction_str = jsonResponse.getString("direction");
 
                 // Update the UI with the received direction
@@ -159,7 +159,7 @@ public class MoveTopActivity extends AppCompatActivity implements WebSocketMessa
                 runOnUiThread(() -> {
                     battery.setText("Battery: " + batteryStatus + "%");
                 });
-            } else if (action.equals("mode")) {// Handle "mode" action
+            } else if (action.equals("modeTop")) {// Handle "mode" action
                 String mode = jsonResponse.getString("mode");
                 String direction_str = jsonResponse.getString("direction");
                 //  Update the UI based on the received mode
