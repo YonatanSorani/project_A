@@ -11,9 +11,6 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import org.json.JSONObject;
 
@@ -100,6 +97,7 @@ public class ChoiceActivity extends AppCompatActivity implements  WebSocketMessa
             }
         });
     }
+    @Override
     protected void onStart() {
         super.onStart();
         if (!WebSocketManager.getInstance().isConnected()) {
@@ -107,8 +105,6 @@ public class ChoiceActivity extends AppCompatActivity implements  WebSocketMessa
         }
         // Set this activity as the listener to handle WebSocket messages
         WebSocketManager.getInstance().setMessageListener(this);
-        Toast.makeText(getBaseContext(), "choice listener", Toast.LENGTH_LONG).show();
-
         WebSocketManager.sendMessage(4, "choice"); //send message that the activity has switched
     }
     @Override

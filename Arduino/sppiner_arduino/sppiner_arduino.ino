@@ -90,7 +90,7 @@ void core0Fun (void *pvParameters)
 {
   while (true) {
     vTaskDelay(100 / portTICK_PERIOD_MS); // Prevent watchdog reset
-    /*readAllVL();
+    readAllVL();
     if (Serial2.available() > 0) {
       Serial.println("connected to lidar");
       readLidarValue();   
@@ -111,8 +111,8 @@ void core0Fun (void *pvParameters)
           }
           currentEstimatedAngle = 0;
       }
-    }*/
-      updateGraph(dataAll,mpuTemperature,GyroZ,currentEstimatedAngle);
+    }
+    updateGraph(dataAll,mpuTemperature,GyroZ,currentEstimatedAngle);
 
      
   }
@@ -130,9 +130,8 @@ void setup() {
   initLEDs();
   initHammers();
   initData();
-  //initLuna();
-  //ticker.attach(0.1, ticker_fun);  // 5 seconds interval  
-  //initVl53();
+  initLuna(); 
+  initVl53();
 
 
 

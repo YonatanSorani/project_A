@@ -1,13 +1,11 @@
 package com.example.spinner;
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+
 
 import android.view.View;
 import android.widget.ImageButton;
@@ -17,8 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-
-import okhttp3.*;
 import org.json.JSONObject;
 
 
@@ -72,9 +68,7 @@ public class MoveTopActivity extends AppCompatActivity implements WebSocketMessa
             }
         });
         ip = MainClass.ip;
-        // Connect to WebSocket
-        WebSocketManager.getInstance().setMessageListener(this);
-        Toast.makeText(getBaseContext(), "initializing listener", Toast.LENGTH_LONG).show();
+
         // Handle On/Off switch
         OnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
             on = isChecked;  // Update the global 'on' boolean based on Switch state
@@ -131,8 +125,6 @@ public class MoveTopActivity extends AppCompatActivity implements WebSocketMessa
         }
         // Set this activity as the listener to handle WebSocket messages
         WebSocketManager.getInstance().setMessageListener(this);
-        Toast.makeText(getBaseContext(), "operate listener", Toast.LENGTH_LONG).show();
-
         WebSocketManager.sendMessage(4, "moveTop"); //send message that the activity has switched
 
     }
@@ -141,35 +133,7 @@ public class MoveTopActivity extends AppCompatActivity implements WebSocketMessa
     protected void onStop() {
         super.onStop();
         on = false;
-        // Optional: Set the listener to null when the activity is paused
-        Toast.makeText(getBaseContext(), "listener is null", Toast.LENGTH_LONG).show();
-    }
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item){
-        int id = item.getItemId();
-        if(id == R.id.back){
-            Intent connect_act=new Intent(MoveTopActivity.this,connect.class);
-            startActivity(connect_act);
-            return true;
-        }
-        else if(id == R.id.operate) {
-            Intent operate_act=new Intent(MoveTopActivity.this,operate.class);
-            startActivity(operate_act);
-            return true;
-        }
-        else if(id == R.id.report){
-            Intent report_act=new Intent(MoveTopActivity.this,GraphsActivity.class);
-            startActivity(report_act);
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu,menu);
-        return true;
+        WebSocketManager.sendMessage(3, "Off");  // Send the mode update to the server
     }
     public void onMessageReceived(String message) {
         try {
@@ -181,7 +145,7 @@ public class MoveTopActivity extends AppCompatActivity implements WebSocketMessa
                 runOnUiThread(() -> {
                     Toast.makeText(getBaseContext(), "WebSocket not connected or send failed", Toast.LENGTH_LONG).show();
                 });
-            } else if (action.equals("move")) {// Handle "move" action
+            } else if (action.equals("moveTop")) {// Handle "move" action
                 String direction_str = jsonResponse.getString("direction");
 
                 // Update the UI with the received direction
@@ -195,19 +159,17 @@ public class MoveTopActivity extends AppCompatActivity implements WebSocketMessa
                 runOnUiThread(() -> {
                     battery.setText("Battery: " + batteryStatus + "%");
                 });
-            } else if (action.equals("mode")) {// Handle "mode" action
+            } else if (action.equals("modeTop")) {// Handle "mode" action
                 String mode = jsonResponse.getString("mode");
                 String direction_str = jsonResponse.getString("direction");
                 //  Update the UI based on the received mode
                 runOnUiThread(() -> {
-                    direction.setText("Choosing direction: " + direction_str);
                     if (mode.equals("On")) {
                         on = true;
-                        Toast.makeText(getBaseContext(), "Mode is On", Toast.LENGTH_LONG).show();
+                        direction.setText("Choosing direction: " + direction_str);
                     } else if (mode.equals("Off")) {
                         on = false;
-                        direction.setText(direction_str);  // Change the TextView text to "Mode is Off"
-                        Toast.makeText(getBaseContext(), "Mode is Off", Toast.LENGTH_LONG).show();
+                        direction.setText("Choosing direction: Mode is Off");
                     }
                 });
             } else if(action.equals("statusUpdate")) {
@@ -234,7 +196,7 @@ public class MoveTopActivity extends AppCompatActivity implements WebSocketMessa
         }
     }
     public void onOpenWebSocket() {
-        runOnUiThread(() -> Toast.makeText(getBaseContext(), "WebSocket connected", Toast.LENGTH_LONG).show());
+        //runOnUiThread(() -> Toast.makeText(getBaseContext(), "WebSocket connected", Toast.LENGTH_LONG).show());
     }
     public void onClosedWebSocket(String reason) {
         runOnUiThread(() -> Toast.makeText(getBaseContext(), "WebSocket closed: " + reason, Toast.LENGTH_LONG).show());

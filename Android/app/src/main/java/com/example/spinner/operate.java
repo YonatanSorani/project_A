@@ -1,13 +1,10 @@
 package com.example.spinner;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+
 
 import android.view.View;
 import android.widget.ImageButton;
@@ -15,10 +12,6 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
-
-import okhttp3.*;
 import org.json.JSONObject;
 
 
@@ -74,18 +67,18 @@ public class operate extends AppCompatActivity implements WebSocketMessageListen
         ip = MainClass.ip;
         // Connect to WebSocket
         WebSocketManager.getInstance().setMessageListener(this);
-        Toast.makeText(getBaseContext(), "initializing listener", Toast.LENGTH_LONG).show();
+
         // Handle On/Off switch
         OnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
             on = isChecked;  // Update the global 'on' boolean based on Switch state
             String mode = isChecked ? "On" : "Off";  // Set mode based on switch state
-            WebSocketManager.sendMessage(3, mode);  // Send the mode update to the server
+            WebSocketManager.sendMessage(5, mode);  // Send the mode update to the server
         });
 
         // Handle forward button click
         forward.setOnClickListener(v -> {
             if(on) {
-                WebSocketManager.sendMessage(1,"forward");
+                WebSocketManager.sendMessage(6,"forward");
             }else{
                 Toast.makeText(getBaseContext(), "Mode is off, can't move", Toast.LENGTH_LONG).show();
             }
@@ -94,7 +87,7 @@ public class operate extends AppCompatActivity implements WebSocketMessageListen
         // Handle backward button click
         backward.setOnClickListener(v -> {
             if(on) {
-                WebSocketManager.sendMessage(1,"backward");
+                WebSocketManager.sendMessage(6,"backward");
             }else{
                 Toast.makeText(getBaseContext(), "Mode is off, can't move", Toast.LENGTH_LONG).show();
             }
@@ -103,7 +96,7 @@ public class operate extends AppCompatActivity implements WebSocketMessageListen
         // Handle right button click
         right.setOnClickListener(v -> {
             if(on) {
-                WebSocketManager.sendMessage(1,"right");
+                WebSocketManager.sendMessage(6,"right");
             }else{
                 Toast.makeText(getBaseContext(), "Mode is off, can't move", Toast.LENGTH_LONG).show();
             }
@@ -112,7 +105,7 @@ public class operate extends AppCompatActivity implements WebSocketMessageListen
         // Handle left button click
         left.setOnClickListener(v -> {
             if(on) {
-                WebSocketManager.sendMessage(1,"left");
+                WebSocketManager.sendMessage(6,"left");
             }else{
                 Toast.makeText(getBaseContext(), "Mode is off, can't move", Toast.LENGTH_LONG).show();
             }
@@ -131,8 +124,6 @@ public class operate extends AppCompatActivity implements WebSocketMessageListen
         }
         // Set this activity as the listener to handle WebSocket messages
         WebSocketManager.getInstance().setMessageListener(this);
-        Toast.makeText(getBaseContext(), "operate listener", Toast.LENGTH_LONG).show();
-
         WebSocketManager.sendMessage(4, "operate"); //send message that the activity has switched
 
     }
@@ -142,32 +133,7 @@ public class operate extends AppCompatActivity implements WebSocketMessageListen
         on = false;
     }
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item){
-        int id = item.getItemId();
-        if(id == R.id.back){
-            Intent connect_act=new Intent(operate.this,connect.class);
-            startActivity(connect_act);
-            return true;
-        }
-        else if(id == R.id.operate) {
-            Intent operate_act=new Intent(operate.this,operate.class);
-            startActivity(operate_act);
-            return true;
-        }
-        else if(id == R.id.report){
-            Intent report_act=new Intent(operate.this,GraphsActivity.class);
-            startActivity(report_act);
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu,menu);
-        return true;
-    }
+
     public void onMessageReceived(String message) {
         try {
             // Parse the received message as JSON
@@ -178,7 +144,7 @@ public class operate extends AppCompatActivity implements WebSocketMessageListen
                 runOnUiThread(() -> {
                     Toast.makeText(getBaseContext(), "WebSocket not connected or send failed", Toast.LENGTH_LONG).show();
                 });
-            } else if (action.equals("move")) {// Handle "move" action
+            } else if (action.equals("moveHammer")) {// Handle "move" action
                 String direction_str = jsonResponse.getString("direction");
 
                 // Update the UI with the received direction
@@ -192,19 +158,17 @@ public class operate extends AppCompatActivity implements WebSocketMessageListen
                 runOnUiThread(() -> {
                     battery.setText("Battery: " + batteryStatus + "%");
                 });
-            } else if (action.equals("mode")) {// Handle "mode" action
+            } else if (action.equals("modeHammer")) {// Handle "mode" action
                 String mode = jsonResponse.getString("mode");
                 String direction_str = jsonResponse.getString("direction");
                 //  Update the UI based on the received mode
                 runOnUiThread(() -> {
-                    direction.setText("Choosing direction: " + direction_str);
                     if (mode.equals("On")) {
                         on = true;
-                        Toast.makeText(getBaseContext(), "Mode is On", Toast.LENGTH_LONG).show();
+                        direction.setText("Choosing direction: " + direction_str);
                     } else if (mode.equals("Off")) {
                         on = false;
-                        direction.setText(direction_str);  // Change the TextView text to "Mode is Off"
-                        Toast.makeText(getBaseContext(), "Mode is Off", Toast.LENGTH_LONG).show();
+                        direction.setText("Choosing direction: Mode is Off");
                     }
                 });
             } else if(action.equals("statusUpdate")) {

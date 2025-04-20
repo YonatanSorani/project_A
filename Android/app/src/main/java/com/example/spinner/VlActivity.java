@@ -3,20 +3,17 @@ package com.example.spinner;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -167,17 +164,9 @@ public class VlActivity extends AppCompatActivity implements WebSocketMessageLis
         }
         // Set this activity as the listener to handle WebSocket messages
         WebSocketManager.getInstance().setMessageListener(this);
-        Toast.makeText(getBaseContext(), "mpu listener", Toast.LENGTH_LONG).show();
-
         WebSocketManager.sendMessage(4, "vl"); //send message that the activity has switched
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        // Optional: Set the listener to null when the activity is paused
-        Toast.makeText(getBaseContext(), "listener is null", Toast.LENGTH_LONG).show();
-    }
     @Override
     public void onMessageReceived(String message) {
         try {

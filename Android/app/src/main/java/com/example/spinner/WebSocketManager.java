@@ -86,18 +86,29 @@ public class WebSocketManager {
         try {
             // Create a new JSON object
             JSONObject jsonMessage = new JSONObject();
-            if (action == 1) { // move
-                jsonMessage.put("action", "move");
+            if (action == 1)
+            { // moveTop
+                jsonMessage.put("action", "moveTop");
                 jsonMessage.put("direction", param);
-            } else if(action == 2 ) {  // battery
+            }else if(action == 2 )
+            {  // battery
                 jsonMessage.put("action", "battery");
-            } else if(action == 3 ) {  // mode on/off
-                jsonMessage.put("action", "mode");
+            } else if(action == 3 )
+            {  // mode on/off
+                jsonMessage.put("action", "modeTop");
                 jsonMessage.put("mode", param);
-            }
-             else if(action == 4 ) {  // mode on/off
+            }else if(action == 4 )
+            {  // changeActivity
                 jsonMessage.put("action", "changeActivity");
                 jsonMessage.put("activity", param);
+            } else if(action == 5 )
+            {  // mode on/off
+                jsonMessage.put("action", "modeHammer");
+                jsonMessage.put("mode", param);
+            } else if (action == 6)
+            { // moveHammer
+                jsonMessage.put("action", "moveHammer");
+                jsonMessage.put("direction", param);
             }
 
             // Send the JSON message over WebSocket
@@ -105,14 +116,23 @@ public class WebSocketManager {
                 // Don't update the UI yet, only send the message, update the UI on message received
             } else {
                 jsonMessage.put("action", "failToConnect");
-                listener.onMessageReceived(jsonMessage.toString());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     public boolean isConnected() {
-        return webSocket != null && client != null && webSocket.send("ping"); // or other connection check
+        try {
+            // Create a new JSON object
+            JSONObject jsonMessage = new JSONObject();
+            jsonMessage.put("action", "ping");
+            return webSocket != null && client != null && webSocket.send(jsonMessage.toString()); // or other connection check
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return false;
     }
     // Close WebSocket
     public void closeWebSocket() {
