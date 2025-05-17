@@ -4,38 +4,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B7409993"
-    tools:context=".connect">
+    android:background="#0B1E3D"
+    tools:context=".connect"
+    android:layoutDirection="ltr"
+    >
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="350dp"
+        android:textColor="#FFFFFF"
+        android:layout_width="360dp"
         android:layout_height="152dp"
         android:gravity="center"
-        android:text="Welcome! Let's go for a spin!!"
+        android:text="Welcome to the spinning top app!"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.131"
+        app:layout_constraintVertical_bias="0.111"
         tools:visibility="visible" />
 
     <Button
         android:id="@+id/connect_button"
         style="@style/Widget.AppCompat.Button"
-        android:layout_width="184dp"
-        android:layout_height="95dp"
-        android:layout_marginBottom="248dp"
-        android:text="next"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="160dp"
+        android:background="@drawable/custom_button"
+        android:text="Let's go for a spin!"
+        android:textColor="@color/ap_white"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.986" />
 
 
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="235dp"
+        android:layout_height="235dp"
+        app:layout_constraintBottom_toTopOf="@+id/connect_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:cardCornerRadius="250dp"
+        app:cardBackgroundColor="@color/white">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="230dp"
+            android:layout_height="230dp"
+            app:cardCornerRadius="250dp"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/boaz"
+                android:scaleType="centerCrop"
+                android:background="@drawable/circle_mask"
+                android:layout_width="230dp"
+                android:layout_height="230dp"
+                tools:srcCompat="@drawable/boaz" />
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

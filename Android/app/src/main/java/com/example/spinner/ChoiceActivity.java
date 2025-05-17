@@ -12,12 +12,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ChoiceActivity extends AppCompatActivity implements  WebSocketMessageListener{
-    private CardView moveTop, moveHammer, lunaGraphs, mpuGraphs, vlGraphs, syncDisplay;
+    private CardView moveTop, moveHammer, lunaGraphs, mpuGraphs, vlGraphs ;
     private ImageButton returnToConnect;
-    private TextView isTopSpinning;
+    private TextView isTopSpinning ,spinCountText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,10 +29,9 @@ public class ChoiceActivity extends AppCompatActivity implements  WebSocketMessa
         lunaGraphs = findViewById(R.id.luna_graphs);
         mpuGraphs = findViewById(R.id.mpu_graphs);
         vlGraphs = findViewById(R.id.vl_graphs);
-        syncDisplay = findViewById(R.id.sync_display);
         returnToConnect = findViewById(R.id.return_choice);
         isTopSpinning = findViewById(R.id.is_top_spinning);
-
+        spinCountText = findViewById(R.id.spin_count_text);
 
         // Change text and color based on the boolean value
         if (MainClass.top_is_spinning) {
@@ -81,14 +81,6 @@ public class ChoiceActivity extends AppCompatActivity implements  WebSocketMessa
             }
         });
 
-        syncDisplay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ChoiceActivity.this, connect.class);
-                startActivity(intent);
-            }
-        });
-
         returnToConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +98,7 @@ public class ChoiceActivity extends AppCompatActivity implements  WebSocketMessa
         // Set this activity as the listener to handle WebSocket messages
         WebSocketManager.getInstance().setMessageListener(this);
         WebSocketManager.sendMessage(4, "choice"); //send message that the activity has switched
+        spinCountText.setText(String.format("%d", MainClass.spinCount));
     }
     @Override
     public void onMessageReceived(String message) {
@@ -129,6 +122,14 @@ public class ChoiceActivity extends AppCompatActivity implements  WebSocketMessa
                     MainClass.top_is_spinning = true;
                     isTopSpinning.setText("Spinning...");  // Set text
                     isTopSpinning.setTextColor(ContextCompat.getColor(ChoiceActivity.this, R.color.green));  // Set text color
+                }
+                if(status.equals("spinCountUpdate")) {
+                    try {
+                        MainClass.spinCount =  (int) jsonResponse.getInt("spinCount");//time
+                        spinCountText.setText(String.format("%d", MainClass.spinCount));
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             });
             }

@@ -29,22 +29,6 @@ void battery(char* out) {
     unsigned long level = random(0, 100);
     sprintf(out, "%lu", level);
 }
- void sendDataToClient(AsyncWebSocketClient *client, const char *message) {
-  if (client != nullptr &&  client->status() == WS_CONNECTED) {
-    client->text(message);
-  }
-  else
-  {
-    for (auto it = clients.begin(); it != clients.end(); ) {
-      if ((*it)->status() == WS_DISCONNECTED) {
-        it = clients.erase(it); // remove disconnected client
-      } else {
-          ++it;
-      }
-    }
-  }
-}
-
 
 void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
   if (type == WS_EVT_CONNECT) {
@@ -114,16 +98,16 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsE
 
         // Compare direction using strcmp()
         if (strcmp(directionHammer, "left") == 0) {
-            motor_u2_left();
+           // motor_u2_left();
         } 
         else if (strcmp(directionHammer, "forward") == 0) {
-            motor_u2_forward();
+           // motor_u2_forward();
         } 
         else if (strcmp(directionHammer, "backward") == 0) {
-            motor_u2_backward();
+           // motor_u2_backward();
         } 
         else if (strcmp(directionHammer, "right") == 0) {
-            motor_u2_right();
+           // motor_u2_right();
         }
       } else if (strcmp(action, "modeTop") == 0) {
         const char* mode_input = doc["mode"];
@@ -165,7 +149,7 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsE
             // Reset the direction to "not picked yet"
             strncpy(directionHammer, "not picked yet", sizeof(directionHammer) - 1);
             directionHammer[sizeof(directionHammer) - 1] = '\0'; // Ensure null termination
-            motor_u2_stop();
+            //motor_u2_stop();
 
             // Set Mode to "Off" with strncpy to avoid overflow
             strncpy(ModeHammer, "Off", sizeof(ModeHammer) - 1);
@@ -256,6 +240,22 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsE
     }
   }
 
+}
+
+ void sendDataToClient(AsyncWebSocketClient *client, const char *message) {
+  if (client != nullptr &&  client->status() == WS_CONNECTED) {
+    client->text(message);
+  }
+  else
+  {
+    for (auto it = clients.begin(); it != clients.end(); ) {
+      if ((*it)->status() == WS_DISCONNECTED) {
+        it = clients.erase(it); // remove disconnected client
+      } else {
+          ++it;
+      }
+    }
+  }
 }
 
 

@@ -34,15 +34,15 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/move_top"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="12dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_column="0"
             app:layout_columnWeight="1"
             app:layout_row="0"
             app:layout_rowWeight="1"
             android:layout_margin="12dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="12dp"
             app:cardBackgroundColor="#efefff">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -69,16 +69,16 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/move_hammer"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="12dp"
-            android:layout_margin="12dp"
-            app:cardBackgroundColor="#efefff"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_column="1"
             app:layout_columnWeight="1"
             app:layout_row="0"
-            app:layout_rowWeight="1">
+            app:layout_rowWeight="1"
+            android:layout_margin="12dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="12dp"
+            app:cardBackgroundColor="#efefff">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -102,16 +102,16 @@
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:id="@+id/mpu_graphs"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="12dp"
-            android:layout_margin="12dp"
-            app:cardBackgroundColor="#efefff"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_column="0"
+            app:layout_columnWeight="1"
             app:layout_row="1"
             app:layout_rowWeight="1"
-            app:layout_columnWeight="1">
+            android:layout_margin="12dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="12dp"
+            app:cardBackgroundColor="#efefff">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -137,16 +137,16 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/luna_graphs"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_column="1"
+            app:layout_columnWeight="1"
+            app:layout_row="1"
+            app:layout_rowWeight="1"
+            android:layout_margin="12dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="12dp"
-            android:layout_margin="12dp"
-            app:cardBackgroundColor="#efefff"
-            app:layout_row="1"
-            app:layout_column="1"
-            app:layout_rowWeight="1"
-            app:layout_columnWeight="1">
+            app:cardBackgroundColor="#efefff">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -172,16 +172,16 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/vl_graphs"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="12dp"
-            android:layout_margin="12dp"
-            app:cardBackgroundColor="#efefff"
-            app:layout_row="2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_column="0"
             app:layout_columnWeight="1"
-            app:layout_rowWeight="1">
+            app:layout_row="2"
+            app:layout_rowWeight="1"
+            android:layout_margin="12dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="12dp"
+            app:cardBackgroundColor="#efefff">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -206,35 +206,40 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/sync_display"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="12dp"
-            android:layout_margin="12dp"
-            app:cardBackgroundColor="#efefff"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_column="1"
             app:layout_columnWeight="1"
             app:layout_row="2"
-            app:layout_rowWeight="1">
+            app:layout_rowWeight="1"
+            android:layout_margin="12dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="12dp"
+            app:cardBackgroundColor="#efefff">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="center">
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:src="@drawable/sync_display_ic"
-                    android:layout_gravity="center_horizontal"/>
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="Sync Display"
-                    android:textSize="18sp"
+                    android:text="Spin Count:"
+                    android:textColor="#101010"
+                    android:textSize="24sp"
                     android:textStyle="bold"
+                    android:layout_marginTop="16dp"
+                    android:layout_gravity="center_horizontal" />
+
+                <TextView
+                    android:id="@+id/spin_count_text"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="20sp"
+
                     android:textColor="@color/black"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

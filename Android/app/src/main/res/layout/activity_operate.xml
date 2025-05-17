@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B7409993"
+    android:background="#0B1E3D"
     tools:context=".operate"
     android:layoutDirection="ltr">
 
@@ -43,6 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="71dp"
         android:clickable="true"
+        android:textColor="#FFFFFF"
         android:drawableLeft="@drawable/battery"
         android:gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
@@ -59,6 +60,7 @@
         android:switchTextAppearance="@style/TextAppearance.AppCompat.Large"
         android:text="Mode"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.236"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,17 +73,19 @@
         android:layout_marginTop="36dp"
         android:text="not picked yet"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.531"
+        app:layout_constraintHorizontal_bias="0.197"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="293dp"
+        android:layout_width="370dp"
         android:layout_height="44dp"
         android:layout_marginTop="56dp"
-        android:text="pick a direction to move in"
+        android:textColor="#FFFFFF"
+        android:text="pick a direction to move the hammer"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.338"

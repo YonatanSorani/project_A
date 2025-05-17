@@ -6,7 +6,6 @@
 #define RXD2 16 // LUNA_ESP_RXD
 #define TXD2 17 // ESP_LUNA_LED8_TXD
 
-
 void readLidarValue();
 void initLuna();
 

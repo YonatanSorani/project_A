@@ -39,8 +39,7 @@ public class LunaActivity extends AppCompatActivity implements WebSocketMessageL
 
     private List<List<Entry>> entries = new ArrayList<>();
 
-    private int windowSize = 110; // Number of points to show
-    private float time_window = 10;
+
 
 
     @Override
@@ -58,9 +57,12 @@ public class LunaActivity extends AppCompatActivity implements WebSocketMessageL
         mcharts[1] = (LineChart) findViewById(R.id.luna_chart2);
         mcharts[2] = (LineChart) findViewById(R.id.luna_chart3);
 
-        for (int i = 0; i < 3; i++) {
-            updateGraph(0, 0, i);
+        if (!WebSocketManager.getInstance().isConnected()) {
+            for (int i = 0; i < 3; i++) {
+                updateGraph(0, 0, i);
+            }
         }
+
         returnToChoice = findViewById(R.id.return_choice);
         isTopSpinning = findViewById(R.id.is_top_spinning);
 
@@ -95,7 +97,7 @@ public class LunaActivity extends AppCompatActivity implements WebSocketMessageL
             min[graph_num] = newY;
         }
         // If the number of data points exceeds the window size, remove the oldest one
-        if (entries.get(graph_num).size() > windowSize) {
+        if (entries.get(graph_num).size() > MainClass.windowSize) {
             entries.get(graph_num).remove(0); // Remove the first (oldest) entry
         }
         if (!entries.get(graph_num).isEmpty()) {
@@ -132,8 +134,8 @@ public class LunaActivity extends AppCompatActivity implements WebSocketMessageL
 
         chart.getXAxis().setEnabled(true); // Enable X-Axis
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        chart.getXAxis().setAxisMinimum(Math.max(newX - time_window,0));
-        chart.getXAxis().setAxisMaximum(Math.max(newX,time_window));
+        chart.getXAxis().setAxisMinimum(Math.max(newX - MainClass.time_window,0));
+        chart.getXAxis().setAxisMaximum(Math.max(newX,MainClass.time_window));
         chart.getXAxis().setTextColor(Color.BLACK);
         chart.getXAxis().setGridColor(Color.GRAY);
         chart.getXAxis().setAxisLineColor(Color.BLACK);

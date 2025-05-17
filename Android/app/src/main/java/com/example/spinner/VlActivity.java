@@ -29,21 +29,16 @@ import java.util.List;
 
 public class VlActivity extends AppCompatActivity implements WebSocketMessageListener{
 
-    private  LineChart[] mcharts = new LineChart[4];
+    private  LineChart[] mcharts = new LineChart[3];
     private ImageButton returnToChoice;
     private TextView isTopSpinning;
     private float[] max = {1,1,1};
     private float[] min = {-1,-1,-1};
-
     private int[]  mcolors = new int[]{
             Color.rgb(137,230,81), Color.rgb(89,199,250), Color.rgb(250,104,119),Color.rgb(240,230,30)
     };
-
-
     private List<List<Entry>> entries = new ArrayList<>();
 
-    private int windowSize = 110; // Number of points to show
-    private float time_window = 10;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +54,10 @@ public class VlActivity extends AppCompatActivity implements WebSocketMessageLis
         mcharts[1] = (LineChart) findViewById(R.id.vl_chart2);
         mcharts[2] = (LineChart) findViewById(R.id.vl_chart3);
 
-        for (int i = 0; i < 3; i++) {
-            updateGraph(0, 0, i);
+        if (!WebSocketManager.getInstance().isConnected()) {
+            for (int i = 0; i < 3; i++) {
+                updateGraph(0, 0, i);
+            }
         }
         returnToChoice = findViewById(R.id.return_choice);
         isTopSpinning = findViewById(R.id.is_top_spinning);
@@ -96,7 +93,7 @@ public class VlActivity extends AppCompatActivity implements WebSocketMessageLis
             min[graph_num] = newY;
         }
         // If the number of data points exceeds the window size, remove the oldest one
-        if (entries.get(graph_num).size() > windowSize) {
+        if (entries.get(graph_num).size() > MainClass.windowSize) {
             entries.get(graph_num).remove(0); // Remove the first (oldest) entry
         }
         if (!entries.get(graph_num).isEmpty()) {
@@ -133,8 +130,8 @@ public class VlActivity extends AppCompatActivity implements WebSocketMessageLis
 
         chart.getXAxis().setEnabled(true); // Enable X-Axis
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        chart.getXAxis().setAxisMinimum(Math.max(newX - time_window,0));
-        chart.getXAxis().setAxisMaximum(Math.max(newX,time_window));
+        chart.getXAxis().setAxisMinimum(Math.max(newX - MainClass.time_window,0));
+        chart.getXAxis().setAxisMaximum(Math.max(newX, MainClass.time_window));
         chart.getXAxis().setTextColor(Color.BLACK);
         chart.getXAxis().setGridColor(Color.GRAY);
         chart.getXAxis().setAxisLineColor(Color.BLACK);
