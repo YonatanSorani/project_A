@@ -26,7 +26,7 @@ import java.util.List;
 
 public class MpuActivity extends AppCompatActivity implements WebSocketMessageListener{
 
-    private  LineChart[] mcharts = new LineChart[4];
+    private  LineChart[] mcharts = new LineChart[3];
     private ImageButton returnToChoice;
     private  TextView isTopSpinning;
     private float[] max = {1,1,1};
@@ -39,8 +39,6 @@ public class MpuActivity extends AppCompatActivity implements WebSocketMessageLi
 
     private List<List<Entry>> entries = new ArrayList<>();
 
-    private int windowSize = 110; // Number of points to show
-    private float time_window = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +55,12 @@ public class MpuActivity extends AppCompatActivity implements WebSocketMessageLi
         mcharts[1] = (LineChart) findViewById(R.id.mpu_chart2);
         mcharts[2] = (LineChart) findViewById(R.id.mpu_chart3);
 
-        for (int i = 0; i < 3; i++) {
-            updateGraph(0, 0, i);
+        if (!WebSocketManager.getInstance().isConnected()) {
+            for (int i = 0; i < 3; i++) {
+                updateGraph(0, 0, i);
+            }
         }
+
         returnToChoice = findViewById(R.id.return_choice);
         isTopSpinning = findViewById(R.id.is_top_spinning);
 
@@ -94,7 +95,7 @@ private void updateGraph(float newX, float newY,int graph_num) {
         min[graph_num] = newY;
     }
     // If the number of data points exceeds the window size, remove the oldest one
-    if (entries.get(graph_num).size() > windowSize) {
+    if (entries.get(graph_num).size() > MainClass.windowSize) {
         entries.get(graph_num).remove(0); // Remove the first (oldest) entry
     }
     if (!entries.get(graph_num).isEmpty()) {
@@ -131,8 +132,8 @@ private void updateChart (LineChart chart, LineData data, int color ,float newX,
 
     chart.getXAxis().setEnabled(true); // Enable X-Axis
     chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-    chart.getXAxis().setAxisMinimum(Math.max(newX - time_window,0));
-    chart.getXAxis().setAxisMaximum(Math.max(newX,time_window));
+    chart.getXAxis().setAxisMinimum(Math.max(newX - MainClass.time_window,0));
+    chart.getXAxis().setAxisMaximum(Math.max(newX,MainClass.time_window));
     chart.getXAxis().setTextColor(Color.BLACK);
     chart.getXAxis().setGridColor(Color.GRAY);
     chart.getXAxis().setAxisLineColor(Color.BLACK);
@@ -193,8 +194,8 @@ private void updateChart (LineChart chart, LineData data, int color ,float newX,
                 float time = (float) jsonResponse.getDouble("time");//time
                 float angle = (float) jsonResponse.getDouble("angle"); // angle
                 float gyro = (float) jsonResponse.getDouble("gyro"); // gyro
-                float count = (float) jsonResponse.getDouble("count");//temperature
-
+                int count = (int) jsonResponse.getInt("count");//temperature
+                MainClass.spinCount = count;
                 // Update the UI with the received direction
                 runOnUiThread(() -> {
                     updateGraph( time/1000, angle, 0);

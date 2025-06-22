@@ -24,7 +24,7 @@ public class WebSocketManager {
 
     // Singleton getInstance method
     public static WebSocketManager getInstance() {
-        if (instance == null) {
+            if (instance == null) {
             synchronized (WebSocketManager.class) {// only one thread can create the WebSocketManager
                 if (instance == null) {
                     instance = new WebSocketManager();
@@ -83,42 +83,39 @@ public class WebSocketManager {
     }
 
     public static void sendMessage(int action, String param ) {
-        try {
-            // Create a new JSON object
-            JSONObject jsonMessage = new JSONObject();
-            if (action == 1)
-            { // moveTop
-                jsonMessage.put("action", "moveTop");
-                jsonMessage.put("direction", param);
-            }else if(action == 2 )
-            {  // battery
-                jsonMessage.put("action", "battery");
-            } else if(action == 3 )
-            {  // mode on/off
-                jsonMessage.put("action", "modeTop");
-                jsonMessage.put("mode", param);
-            }else if(action == 4 )
-            {  // changeActivity
-                jsonMessage.put("action", "changeActivity");
-                jsonMessage.put("activity", param);
-            } else if(action == 5 )
-            {  // mode on/off
-                jsonMessage.put("action", "modeHammer");
-                jsonMessage.put("mode", param);
-            } else if (action == 6)
-            { // moveHammer
-                jsonMessage.put("action", "moveHammer");
-                jsonMessage.put("direction", param);
-            }
+        if (instance.isConnected())//// can be a problem
+        {
+            try {
+                // Create a new JSON object
+                JSONObject jsonMessage = new JSONObject();
+                if (action == 1) { // moveTop
+                    jsonMessage.put("action", "moveTop");
+                    jsonMessage.put("direction", param);
+                } else if (action == 2) {  // battery
+                    jsonMessage.put("action", "battery");
+                } else if (action == 3) {  // mode on/off
+                    jsonMessage.put("action", "modeTop");
+                    jsonMessage.put("mode", param);
+                } else if (action == 4) {  // changeActivity
+                    jsonMessage.put("action", "changeActivity");
+                    jsonMessage.put("activity", param);
+                } else if (action == 5) {  // mode on/off
+                    jsonMessage.put("action", "modeHammer");
+                    jsonMessage.put("mode", param);
+                } else if (action == 6) { // moveHammer
+                    jsonMessage.put("action", "moveHammer");
+                    jsonMessage.put("direction", param);
+                }
 
-            // Send the JSON message over WebSocket
-            if (webSocket != null && webSocket.send(jsonMessage.toString())) {
-                // Don't update the UI yet, only send the message, update the UI on message received
-            } else {
-                jsonMessage.put("action", "failToConnect");
+                // Send the JSON message over WebSocket
+                if (webSocket != null && webSocket.send(jsonMessage.toString())) {
+                    // Don't update the UI yet, only send the message, update the UI on message received
+                } else {
+                    jsonMessage.put("action", "failToConnect");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
     public boolean isConnected() {

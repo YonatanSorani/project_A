@@ -13,12 +13,13 @@ void initData();
 
 struct Data {
   unsigned long CurrentTime;
+  unsigned long PreviousTime;
 
   //mpu
   float mpuTemperature;
   float angle;
   float GyroZ;
-  int rotationCount;
+  int spinCount;
     
   //luna 
   int distanceLuna;
@@ -28,6 +29,7 @@ struct Data {
   //VL
   int vldistance[3];
 };
+//The instance of the data structure that we use throughout the program. Initialized in the initData function.
 extern Data dataAll;
 
 #endif
