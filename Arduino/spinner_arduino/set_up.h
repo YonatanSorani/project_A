@@ -29,6 +29,7 @@ struct Data {
   //VL
   int vldistance[3];
 };
+//The instance of the data structure that we use throughout the program. Initialized in the initData function.
 extern Data dataAll;
 
 #endif

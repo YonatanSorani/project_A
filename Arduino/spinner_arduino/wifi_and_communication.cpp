@@ -34,6 +34,9 @@ void battery(char* out) {
     client->text(message);
   }
   else
+  //////////////////////////////////////////////////////////////////////////////////
+  //Sometimes there is a problem with the connection and we think it comes from this part and its counterpart in the application. 
+  //If there is a more serious problem, we recommend rewriting this part of the code (including the corresponding part in the application)
   {
     for (auto it = clients.begin(); it != clients.end(); ) {
       if ((*it)->status() == WS_DISCONNECTED) {
@@ -43,11 +46,15 @@ void battery(char* out) {
       }
     }
   }
+  //////////////////////////////////////////////////////////////////////////////////
 }
 
 
 void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
-  if (type == WS_EVT_CONNECT) {
+  //////////////////////////////////////////////////////////////////////////////////
+  //Sometimes there is a problem with the connection and we think it comes from this part and its counterpart in the application. 
+  //If there is a more serious problem, we recommend rewriting this part of the code (including the corresponding part in the application)
+  if (type == WS_EVT_CONNECT) { 
     Serial.println("WebSocket client connected");
     Serial.println(clients.size());
     clients.push_back(client); // Add the client to the list
@@ -56,7 +63,12 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsE
     Serial.println("WebSocket client disconnected");
     client->close();  // Close the WebSocket connection
     clients.erase(std::remove(clients.begin(), clients.end(), client), clients.end()); // Remove the client from the list
-  }else if(type == WS_EVT_DATA) {
+
+
+
+  //////////////////////////////////////////////////////////////////////////////////  
+  }else if(type == WS_EVT_DATA) {// Here we determine the ESP's response to incoming messages.
+  
     String message = String((char*)data);
     Serial.println("Received WebSocket message");
 
@@ -86,7 +98,8 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsE
         responseDoc["action"] = "moveTop";
         responseDoc["direction"] = directionTop;
 
-        // Compare direction using strcmp()
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Need to change here to support the movement of the spinning top
         if (strcmp(directionTop, "left") == 0) {
             is_left = true;
         } 
@@ -99,7 +112,7 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsE
         else if (strcmp(directionTop, "right") == 0) {
             is_right = true;
         }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       }else if (strcmp(action, "moveHammer") == 0) {
         if (doc.containsKey("direction")) {
           // Safely copy the direction from the JSON object to the 'direction' char array
@@ -126,6 +139,8 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsE
             motor_u2_right();
         }
       } else if (strcmp(action, "modeTop") == 0) {
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Need to change here to support the movement of the spinning top
         const char* mode_input = doc["mode"];
         Serial.print("Mode: ");
         Serial.println(mode_input);
@@ -153,6 +168,7 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsE
         responseDoc["action"] = "modeTop";
         responseDoc["mode"] = ModeTop;  // `Mode` is now a char array
         responseDoc["direction"] = directionTop;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
       } else if (strcmp(action, "modeHammer") == 0) {
         const char* mode_input = doc["mode"];
@@ -228,8 +244,8 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsE
     sendDataToClient(clients[0],response_str);
     responseDoc.clear();
     Serial.println(response_str);
-
-    //for moveTop, changing the LED acording to the state of the direction and mode
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//for moveTop, changing the LED acording to the state of the direction and mode - can be removed or changed when the mobment is implamented.
     if( is_right)
     {
       digitalWrite(gpio_led[0], LOW);
@@ -254,8 +270,8 @@ void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsE
     }else{
       digitalWrite(gpio_led[3], HIGH);
     }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   }
-
 }
 
 

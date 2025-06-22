@@ -1,3 +1,7 @@
+/*///////////////////////////////////////////////////////////////////////////////////////
+Most of this code is from the project - Spinning top integration v2.0
+link to the project website - https://diglab.technion.ac.il/projects/spinning-top-integration-v2-0/
+*/////////////////////////////////////////////////////////////////////////////////////////
 #include "rotation_and_display.h"
 
 int previousSpinCount = -1; // Store the last spin count
@@ -97,6 +101,7 @@ void displaySpinCountOnLeds(int number) {
   }
 }
 
+//In all the functions below we wanted it to only be displayed at an angle of 0 degrees. By removing the comments you can also enable angles of 90, 180 and 270.
 void display_0 (float angle){
     if(angle>=(0+0)*(M_PI/180) && angle <(5+0)*(M_PI/180)){
       rotatedPattern = 0b1111111;

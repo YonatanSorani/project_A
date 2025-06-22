@@ -5,8 +5,8 @@ HardwareSerial LUNA_SERIAL(2);  // Use UART2
 void initLuna() {
   LUNA_SERIAL.begin(115200, SERIAL_8N1, RXD2, TXD2);
 
-  // Set TF-Luna output frequency to 20 Hz: command 5A 06 03 20
-  uint8_t freqCmd[] = {0x5A, 0x06, 0x03, 0x1E};  // 0x14 = 20
+  // Set TF-Luna output frequency to 20 Hz: command 5A 06 03 14
+  uint8_t freqCmd[] = {0x5A, 0x06, 0x03, 0x1E};  // 0x14 = 20 // 0x1E =30
   LUNA_SERIAL.write(freqCmd, sizeof(freqCmd));
   uint8_t response[1];
   Serial2.readBytes(response, 1);
@@ -24,7 +24,6 @@ void initLuna() {
     }
     Serial.println();
   }
-    // Enable continuous output mode
   
 }
 

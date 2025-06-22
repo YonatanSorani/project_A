@@ -27,7 +27,8 @@ void calibrateMPU(int samples = 20) {
   gy_bias /= samples;
   gz_bias /= samples;
 
-  
+  //for debuging
+  /*
   Serial.println("Calibration complete:");
   Serial.print("Accel bias (m/s^2): x="); Serial.print(ax_bias, 3);
   Serial.print(", y="); Serial.print(ay_bias, 3);
@@ -36,7 +37,7 @@ void calibrateMPU(int samples = 20) {
   Serial.print("Gyro bias (rad/s): x="); Serial.print(gx_bias, 3);
   Serial.print(", y="); Serial.print(gy_bias, 3);
   Serial.print(", z="); Serial.println(gz_bias, 3);
-
+  */
 }
 
 void initMPU(){
@@ -58,8 +59,9 @@ void initMPU(){
   Wire.write(0x00);             // Disable all interrupts
   Wire.endTransmission();
 
-  //calibrateMPU();
+  calibrateMPU();
 }
+//for debuging
   /*Serial.print(" Accelerometer range set to: ");
   switch (mpu.getAccelerometerRange()) {
   case MPU6050_RANGE_2_G:
@@ -126,7 +128,7 @@ void readMPUValue(){
   sensors_event_t a, g, temp;
   mpu.getGyroSensor()->getEvent(&g);
   dataAll.GyroZ = (g.gyro.z-gz_bias); // Angular velocity in rad/s
-  //dataAll.mpuTemperature = temp.temperature;
+  //dataAll.mpuTemperature = temp.temperature; // if you what to know the temperature
   
 }
 

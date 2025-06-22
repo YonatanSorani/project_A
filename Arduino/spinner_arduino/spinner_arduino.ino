@@ -1,6 +1,5 @@
 #include <MPU6050_light.h>
 #include <Wire.h>
-
 #include <cmath>
 
 #include "set_up.h"
@@ -11,9 +10,10 @@
 #include "mpu.h"
 #include "rotation_and_display.h"
 
-const int ITERATIONS = 100;
+const int ITERATIONS = 100; // for debuging
 unsigned long iterTimes[ITERATIONS]; // for debuging
-int iterIndex = 0;
+int iterIndex = 0; // for debuging
+
 
 void core0Fun(void *pvParameters) {
 
@@ -31,7 +31,7 @@ void core0Fun(void *pvParameters) {
     readMPUValue();
     updateState(dataAll.GyroZ, dt);
     
-    /*
+    /* Used for debaging. if it is  not commented out it would hurt the performance, it prints the times for each iteration.
     unsigned long iterEnd = micros();
     unsigned long duration = iterEnd - iterStart;
 
@@ -65,6 +65,7 @@ void setup() {
   initLEDs();
   initHammers();
   
+  //If one of the sensors is disconnected, its init function needs to be commented out for the code to continue.
   initMPU();
   //initLuna(); 
   initVl53();

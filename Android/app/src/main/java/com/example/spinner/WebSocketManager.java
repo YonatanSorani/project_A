@@ -24,7 +24,7 @@ public class WebSocketManager {
 
     // Singleton getInstance method
     public static WebSocketManager getInstance() {
-        if (instance == null) {
+            if (instance == null) {
             synchronized (WebSocketManager.class) {// only one thread can create the WebSocketManager
                 if (instance == null) {
                     instance = new WebSocketManager();

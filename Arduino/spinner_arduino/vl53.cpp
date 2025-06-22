@@ -25,7 +25,7 @@ void initVl53() {
 void readAllVL() {
   for (int i = 0; i < 3; i++) {
     uint16_t dist = vl53[i].readRangeContinuousMillimeters();
-    
+    //We limited the value so we could see it well in the graphs.
     if (vl53[i].timeoutOccurred() || dist > 1200) {
       dataAll.vldistance[i] = 120;
     } else {
